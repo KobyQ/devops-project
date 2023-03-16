@@ -1,0 +1,39 @@
+openapi: 3.0.0
+info:
+  description: Simple API
+  version: 3.0.0
+  title: Simple API
+  contact:
+    email: kobequagraine@yahoo.com
+
+components:
+  schemas:
+    HealthCheck:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      description: "Health Check Response"
+  responses:
+    HealthCheck:
+      description: A health check result
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HealthCheck"
+
+paths:
+  /live:
+    get:
+      operationId: GetStatus
+      summary: Gets status of health check
+      tags:
+        - Health Check
+      responses:
+        200:
+          $ref: "#/components/responses/HealthCheck"
+    

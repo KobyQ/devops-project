@@ -1,0 +1,10 @@
+{
+    "database": {
+        "connectionString": "",
+        "databaseName": "DevOpsProject"
+    },
+    "observability": {
+        "connectionString": "",
+        "roleName": "API"
+    }
+}
