@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Azure Config
+.azure
+
+# Terraform Config
+*.terraform*
