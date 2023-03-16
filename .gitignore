@@ -108,3 +108,6 @@ dist
 
 # Terraform Config
 *.terraform*
+
+# VS Code Config
+.vscode

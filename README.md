@@ -40,7 +40,7 @@ The repo is structured to follow the [Azure Developer CLI](https://learn.microso
 The following prerequisites are required to run this project.
 
 - [Azure Developer CLI](https://aka.ms/azd-install)
-- [Node.js with npm (16.13.1+)](https://nodejs.org/) - for API backend and Web frontend
+- [Node.js with npm (16.13.1+)](https://nodejs.org/) - for API
 - [Terraform CLI](https://aka.ms/azure-dev/terraform-install)
 
 ## Spin up resources
