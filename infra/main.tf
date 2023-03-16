@@ -63,6 +63,30 @@ module "appserviceplan" {
 }
 
 # ------------------------------------------------------------------------------------------------------
+# Deploy application insights
+# ------------------------------------------------------------------------------------------------------
+module "applicationinsights" {
+  source           = "./modules/applicationinsights"
+  location         = var.location
+  rg_name          = azurerm_resource_group.rg.name
+  environment_name = var.environment_name
+  workspace_id     = module.loganalytics.LOGANALYTICS_WORKSPACE_ID
+  tags             = azurerm_resource_group.rg.tags
+  resource_token   = local.resource_token
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Deploy log analytics
+# ------------------------------------------------------------------------------------------------------
+module "loganalytics" {
+  source         = "./modules/loganalytics"
+  location       = var.location
+  rg_name        = azurerm_resource_group.rg.name
+  tags           = azurerm_resource_group.rg.tags
+  resource_token = local.resource_token
+}
+
+# ------------------------------------------------------------------------------------------------------
 # Deploy app service api
 # ------------------------------------------------------------------------------------------------------
 module "api" {
@@ -79,6 +103,7 @@ module "api" {
     "AZURE_COSMOS_DATABASE_NAME"            = module.cosmos.AZURE_COSMOS_DATABASE_NAME
     "SCM_DO_BUILD_DURING_DEPLOYMENT"        = "true"
     "AZURE_KEY_VAULT_ENDPOINT"              = module.keyvault.AZURE_KEY_VAULT_ENDPOINT
+    "APPLICATIONINSIGHTS_CONNECTION_STRING" = module.applicationinsights.APPLICATIONINSIGHTS_CONNECTION_STRING
   }
 
   app_command_line = ""

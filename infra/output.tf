@@ -19,3 +19,8 @@ output "AZURE_LOCATION" {
   value = var.location
 }
 
+output "APPLICATIONINSIGHTS_CONNECTION_STRING" {
+  value     = module.applicationinsights.APPLICATIONINSIGHTS_CONNECTION_STRING
+  sensitive = true
+}
+
