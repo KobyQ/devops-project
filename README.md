@@ -19,8 +19,33 @@ Here's a high level architecture diagram that illustrates these components. Noti
 
 ## Application Code
 
-The repo is structured to follow the [Azure Developer CLI](https://aka.ms/azure-dev/overview) conventions including:
+The repo is structured to follow the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/make-azd-compatible) conventions including:
 
 - **Source Code**: All application source code is located in the `src` folder.
 - **Infrastructure as Code**: All application "infrastructure as code" files are located in the `infra` folder.
 - **Azure Developer Configuration**: An `azure.yaml` file located in the root that ties the application source code to the Azure services defined in the "infrastructure as code" files.
+
+## Spin up resources
+
+To get this application up and running on Azure, use the `azd up` command. This will create and configure all necessary Azure resources - including access policies and roles for your account and service-to-service communication with Managed Identities.
+
+1. Run the following command to initialize the project, provision Azure resources, and deploy the application code.
+
+```bash
+azd up
+```
+
+You will be prompted for the following information:
+
+- `Environment Name`: This will be used as a prefix for the resource group that will be created to hold all Azure resources. This name should be unique within your Azure subscription.
+- `Azure Location`: The Azure location where your resources will be deployed.
+- `Azure Subscription`: The Azure Subscription where your resources will be deployed.
+
+> NOTE: This may take a while to complete as it executes three commands: `azd init` (initializes environment), `azd provision` (provisions Azure resources), and `azd deploy` (deploys application code). You will see a progress indicator as it provisions and deploys your application.
+
+When `azd up` is complete it will output the following URLs:
+
+- Azure Portal link to view resources
+- API application
+
+!["azd up output"](assets/azd-up-output.png)
