@@ -17,6 +17,16 @@ Here's a high level architecture diagram that illustrates these components. Noti
 
 <img src="assets/devops-project-architecture.jpg" width="60%" alt="Application architecture diagram"/>
 
+### Security
+
+#### Roles
+
+The project creates a [managed identity](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) for the app inside Azure Active Directory tenant, and it is used to authenticate the app with Azure and other services that support Azure AD authentication like Key Vault via access policies. You will see principalId referenced in the infrastructure as code files, that refers to the id of the currently logged in Azure Developer CLI user, which will be granted access policies and permissions to run the application.
+
+#### Key Vault
+
+The project uses [Azure Key Vault](https://docs.microsoft.com/azure/key-vault/general/overview) to securely store Cosmos DB connection string for the provisioned Cosmos DB account.
+
 ## Application Code
 
 The repo is structured to follow the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/make-azd-compatible) conventions including:
@@ -24,6 +34,14 @@ The repo is structured to follow the [Azure Developer CLI](https://learn.microso
 - **Source Code**: All application source code is located in the `src` folder.
 - **Infrastructure as Code**: All application "infrastructure as code" files are located in the `infra` folder.
 - **Azure Developer Configuration**: An `azure.yaml` file located in the root that ties the application source code to the Azure services defined in the "infrastructure as code" files.
+
+### Prerequisites
+
+The following prerequisites are required to run this project.
+
+- [Azure Developer CLI](https://aka.ms/azd-install)
+- [Node.js with npm (16.13.1+)](https://nodejs.org/) - for API backend and Web frontend
+- [Terraform CLI](https://aka.ms/azure-dev/terraform-install)
 
 ## Spin up resources
 
@@ -49,3 +67,36 @@ When `azd up` is complete it will output the following URLs:
 - API application
 
 !["azd up output"](assets/azd-up-output.png)
+
+## Monitor the application using `azd monitor`
+
+To help with monitoring applications, the Azure Dev CLI provides a `monitor` command to help you get to the various Application Insights dashboards.
+
+- Run the following command to open the "Overview" dashboard:
+
+  ```bash
+  azd monitor --overview
+  ```
+
+- Live Metrics Dashboard
+
+  Run the following command to open the "Live Metrics" dashboard:
+
+  ```bash
+  azd monitor --live
+  ```
+
+- Logs Dashboard
+
+  Run the following command to open the "Logs" dashboard:
+
+  ```bash
+  azd monitor --logs
+
+## Clean up resources
+
+When you are done, you can delete all the Azure resources created with this template by running the following command:
+
+```bash
+azd down
+```
