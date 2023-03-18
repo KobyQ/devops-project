@@ -46,29 +46,3 @@ resource "azurerm_key_vault_access_policy" "app" {
     "Delete",
   ]
 }
-
-resource "azurerm_key_vault_access_policy" "user" {
-  count        = var.principal_id == "" ? 0 : 1
-  key_vault_id = azurerm_key_vault.kv.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = var.principal_id
-
-  secret_permissions = [
-    "Get",
-    "Set",
-    "List",
-    "Delete",
-    "Purge"
-  ]
-}
-
-resource "azurerm_key_vault_secret" "secrets" {
-  count        = length(var.secrets)
-  name         = var.secrets[count.index].name
-  value        = var.secrets[count.index].value
-  key_vault_id = azurerm_key_vault.kv.id
-  depends_on = [
-    azurerm_key_vault_access_policy.user,
-    azurerm_key_vault_access_policy.app
-  ]
-}

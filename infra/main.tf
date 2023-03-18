@@ -4,10 +4,11 @@ locals {
   resource_token               = substr(replace(lower(local.sha), "[^A-Za-z0-9_]", ""), 0, 13)
   cosmos_connection_string_key = "AZURE-COSMOS-CONNECTION-STRING"
 }
+
 # ------------------------------------------------------------------------------------------------------
 # Deploy resource Group
 # ------------------------------------------------------------------------------------------------------
-resource "azurecaf_name" "rg_name" {
+resource "azurecaf_name" "devops_rg" {
   name          = var.environment_name
   resource_type = "azurerm_resource_group"
   random_length = 0
@@ -15,7 +16,7 @@ resource "azurecaf_name" "rg_name" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = azurecaf_name.rg_name.result
+  name     = azurecaf_name.devops_rg.result
   location = var.location
 
   tags = local.tags
@@ -99,7 +100,8 @@ module "api" {
   service_name       = "api"
   appservice_plan_id = module.appserviceplan.APPSERVICE_PLAN_ID
   app_settings = {
-    "AZURE_COSMOS_CONNECTION_STRING_KEY"    = module.cosmos.AZURE_COSMOS_CONNECTION_STRING
+    "AZURE_COSMOS_CONNECTION_STRING"        = module.cosmos.AZURE_COSMOS_CONNECTION_STRING
+    "AZURE_COSMOS_CONNECTION_STRING_KEY"    = local.cosmos_connection_string_key
     "AZURE_COSMOS_DATABASE_NAME"            = module.cosmos.AZURE_COSMOS_DATABASE_NAME
     "SCM_DO_BUILD_DURING_DEPLOYMENT"        = "true"
     "AZURE_KEY_VAULT_ENDPOINT"              = module.keyvault.AZURE_KEY_VAULT_ENDPOINT
