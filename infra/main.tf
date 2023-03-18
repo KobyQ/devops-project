@@ -42,6 +42,18 @@ module "keyvault" {
 }
 
 # ------------------------------------------------------------------------------------------------------
+# Deploy network
+# ------------------------------------------------------------------------------------------------------
+module "network" {
+  source                         = "./modules/network"
+  location                       = var.location
+  rg_name                        = azurerm_resource_group.rg.name
+  tags                           = azurerm_resource_group.rg.tags
+  app_id                         = module.api.APP_ID
+  private_connection_resource_id = module.cosmos.AZURE_COSMOS_ACCOUNT_ID
+}
+
+# ------------------------------------------------------------------------------------------------------
 # Deploy cosmos
 # ------------------------------------------------------------------------------------------------------
 module "cosmos" {
@@ -100,12 +112,13 @@ module "api" {
   service_name       = "api"
   appservice_plan_id = module.appserviceplan.APPSERVICE_PLAN_ID
   app_settings = {
-    "AZURE_COSMOS_CONNECTION_STRING"        = module.cosmos.AZURE_COSMOS_CONNECTION_STRING
     "AZURE_COSMOS_CONNECTION_STRING_KEY"    = local.cosmos_connection_string_key
     "AZURE_COSMOS_DATABASE_NAME"            = module.cosmos.AZURE_COSMOS_DATABASE_NAME
     "SCM_DO_BUILD_DURING_DEPLOYMENT"        = "true"
     "AZURE_KEY_VAULT_ENDPOINT"              = module.keyvault.AZURE_KEY_VAULT_ENDPOINT
     "APPLICATIONINSIGHTS_CONNECTION_STRING" = module.applicationinsights.APPLICATIONINSIGHTS_CONNECTION_STRING
+    "WEBSITE_DNS_SERVER"                    = "168.63.129.16"
+    "WEBSITE_VNET_ROUTE_ALL"                = "1"
   }
 
   app_command_line = ""

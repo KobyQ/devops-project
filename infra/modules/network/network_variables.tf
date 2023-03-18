@@ -13,19 +13,12 @@ variable "tags" {
   type        = map(string)
 }
 
-variable "resource_token" {
-  description = "A suffix string to centrally mitigate resource name collisions."
+variable "app_id" {
+  description = "The id of the azure web app."
   type        = string
 }
 
-variable "sku_name" {
-  description = "The SKU for the plan."
+variable "private_connection_resource_id" {
+  description = "The id of the resource for private connection"
   type        = string
-  default     = "P1v2"
-}
-
-variable "os_type" {
-  description = "The O/S type for the App Services to be hosted in this plan."
-  type        = string
-  default     = "Linux"
 }

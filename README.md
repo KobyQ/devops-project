@@ -17,6 +17,10 @@ Here's a high level architecture diagram that illustrates these components. Noti
 
 <img src="assets/devops-project-architecture.jpg" width="60%" alt="Application architecture diagram"/>
 
+### Networking
+
+The architecture ensures communication from the api in Azure App Service and Azure Cosmos DB only traverses a virtual network.
+
 ### Security
 
 #### Roles

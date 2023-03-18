@@ -6,3 +6,7 @@ output "AZURE_COSMOS_CONNECTION_STRING" {
 output "AZURE_COSMOS_DATABASE_NAME" {
   value = azurerm_cosmosdb_mongo_database.mongodb.name
 }
+
+output "AZURE_COSMOS_ACCOUNT_ID" {
+  value = azurerm_cosmosdb_account.db.id
+}
