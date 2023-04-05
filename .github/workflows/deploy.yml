@@ -1,0 +1,40 @@
+name: Deploy
+
+# This workflow runs when there is a push to main and deploys API
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Enter Target Branch, Sha or Tag'
+        required: true
+        default: 'main'
+
+env:
+  API_PATH: 'src/api'
+
+jobs:
+  deploy-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Default Branch'
+        if: "${{ github.event.inputs.branch == '' }}"
+        uses: actions/checkout@v2
+
+      - name: 'Checkout Target Branch'
+        if: "${{ github.event.inputs.branch != '' }}"
+        uses: actions/checkout@v2
+        with:
+          ref: '${{ github.event.inputs.branch }}'
+
+      - name: 'Deploy API'
+        id: deploy-api
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.SITE_SECRET }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: 'upload'
+          app_location: ${{ env.API_PATH }}
+          output_location: 'dist'

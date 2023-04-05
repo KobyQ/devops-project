@@ -103,11 +103,5 @@ dist
 # TernJS port file
 .tern-port
 
-# Azure Config
-.azure
-
-# Terraform Config
-*.terraform*
-
-# VS Code Config
-.vscode
+# Azure Functions artifacts
+local.settings.json
